@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Data from Google Sheets</title>
+    <script src="https://cdn.jsdelivr.net/npm/drive-db"></script>
+</head>
+<body>
+    <table id="datatable"></table>
+    <script>
+        LoadData();
+        async function LoadData(){
+            let data = await drive('1B1jNNox4b1sl_i1Hjr_X90zCsUie6XKfsPg_jQu8Ul8');
+            console.log(data);
+
+            // Create the table
+            let datatable = document.querySelector('#datatable');
+            if(data.length){
+                let columns = Object.getOwnPropertyNames(data[0]);
+                columns.forEach(col => {
+                    let th = document.createElement('th');
+                    th.innerText = col;
+                    datatable.appendChild(th);
+                });
+
+                data.forEach(row => {
+                    let tr = document.createElement('tr');
+                    columns.forEach(col => {
+                        let td = document.createElement('td');
+                        td.innerText = row[col];
+                        tr.appendChild(td);
+                    });
+                    
+                    datatable.appendChild(tr);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
